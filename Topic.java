@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Topic {
-	private final static double minSuppTopic = 0.6;
+	private final static double minSuppTopic = 0.4;
 	private ArrayList<Item> listItemCandidate;
 	
 	public Topic(ArrayList<Item> listItemCandidate) {

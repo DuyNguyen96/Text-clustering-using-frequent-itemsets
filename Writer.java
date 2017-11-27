@@ -3,10 +3,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -68,24 +66,11 @@ public class Writer {
 		}
 	}
 	
-	public void writeListUnCluster(ArrayList<ArrayList<Integer>> lstUncluster){
-		File file = new File("List Uncluster.txt");
+	public void writeListCluster_Topic(ArrayList<Cluster> lstCluster, double minsupp){		
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-			for (ArrayList<Integer> lst : lstUncluster){
-				writer.append(lst.toString() + "\n");
-			}
-			writer.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void writeListCluster_Topic(ArrayList<Cluster> lstCluster){		
-		try {
-			FileOutputStream file = new FileOutputStream("Output/Output.txt");
+			FileOutputStream file = new FileOutputStream("Output/" + minsupp + "/Output.txt");
 			OutputStreamWriter osr = new OutputStreamWriter(file, "utf-8");
+			@SuppressWarnings("resource")
 			BufferedWriter writer = new BufferedWriter(osr);
 			for (Cluster c : lstCluster){
 				//writer.append(c.getListId().toString() + "\n");
@@ -93,7 +78,6 @@ public class Writer {
 			}
 			writer.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

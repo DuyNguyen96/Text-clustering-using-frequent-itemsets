@@ -1,13 +1,10 @@
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Document {
 	private String documentID;
@@ -87,13 +84,13 @@ public class Document {
 		}
 	}
 	
+	//@SuppressWarnings("static-access")
 	public void findFreqItem(double minsupp){
 		countWord();
-		
-		ArrayList<Item> listAllItem = new ArrayList<>(listFreqItems);
-		int maxFreq = maxFreq();
+		//ArrayList<Item> listAllItem = new ArrayList<>(listFreqItems);
+		//int maxFreq = maxFreq();
 		listFreqItems = listItem_Freq(listFreqItems, minsupp);
-		ArrayList<Item> listItemAdd = new ArrayList<>();
+		/*ArrayList<Item> listItemAdd = new ArrayList<>();
 		String dataTemp = new String();
 		dataTemp = data.copyValueOf(data.toCharArray());
 		ArrayList<String> lstWordItem = new ArrayList<>();
@@ -105,20 +102,15 @@ public class Document {
 				ArrayList<Item> listAllItemTemp = new ArrayList<>(listAllItem);
 				int freqItem = freq(lstWordItem);
 				Item item = new Item(strItem(lstWordItem), freqItem);
-				//listItemTemp = removeItem(lstWordItem, listItemTemp);
-				//listAllItemTemp = removeItem(lstWordItem, listAllItemTemp);
-				
 				listItemTemp = listItem_Freq(listAllItemTemp, minsupp);
 				listItemTemp.add(item);
 				
-				if ((double)freqItem/maxFreq >= minsupp){
-					
+				if ((double)freqItem/maxFreq >= minsupp){		
 					for(Item i : listItemAdd){
 						listItemTemp.add(i);
 					}
 					dataTemp = dataTemp.replaceAll(item.getItem(), "").replaceAll("\\s\\s", " ");
 					listFreqItems = listItemTemp;
-					//listAllItem = removeItem(lstWordItem, listAllItem);
 					listItemAdd.add(item);
 				} else {
 					lstWordItem = new ArrayList<>();
@@ -130,7 +122,7 @@ public class Document {
 				lstWordItem = new ArrayList<>();
 				lstWordItem.add(str);
 			}
-		}
+		}*/
 	}
 	
 	
@@ -138,24 +130,12 @@ public class Document {
 		int maxFreq = maxFreq(listItem);
 		ArrayList<Item> lstFreq = new ArrayList<>();
 		for (Item i : listItem){
-			double per = ((double)i.getFreq()/maxFreq);
-			if(per >= minsupp && i.getFreq() >= 2){
+			double per = ((double)i.getFreq()/listSequenceOfWord.size());
+			if(per >= minsupp){
 				lstFreq.add(i);
 			}
 		}
 		return lstFreq;
-	}
-	
-	private ArrayList<Item> removeItem(ArrayList<String> lstString, ArrayList<Item> listItemTemp){
-		for(String str : lstString){
-			for (Item i : listItemTemp){
-				if(i.getItem().contains(str)){
-					listItemTemp.remove(i);
-					break;
-				}
-			}
-		}
-		return listItemTemp;
 	}
 	
 	private String strItem(ArrayList<String> lstString){
@@ -233,6 +213,15 @@ public class Document {
 		Process_Document pDC = new Process_Document();
 		listSequenceOfWord = pDC.process_RemoveStopWord(data);
 		this.findFreqItem(minsupp);
+	}
+	
+	public void process_TF(){
+		Process_Document pDC = new Process_Document();
+		listSequenceOfWord = pDC.process_RemoveStopWord(data);
+		countWord();
+		for (Item i : listFreqItems){
+			i.setPerOfFreq((double)i.getFreq()/listSequenceOfWord.size());
+		}
 	}
 	
 	

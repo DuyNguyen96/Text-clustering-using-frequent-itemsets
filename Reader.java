@@ -8,9 +8,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Reader {
-	private final static String endDC1 = "( theo";
 	private String filePath = "Input";
 	
+	@SuppressWarnings("resource")
 	public ArrayList<Document> readFile(){
 		ArrayList<Document> lstDocument = new ArrayList<>();
 		Document dc = new Document("");
@@ -20,14 +20,14 @@ public class Reader {
 			for(File f : file)
 			{
 				InputStream isr = new FileInputStream(f);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(isr, "utf-8"));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(isr, "UTF-8"));
 				String  line = null;
 				while((line = reader.readLine()) != null){
 					line += " ";
 					line = line.toLowerCase().replaceAll("-", "").replaceAll("\\s\\s", " ");	
-					dc.addData(line);
-					dc.setDocumentID(f.getName());
+					dc.addData(line);	
 				}
+				dc.setDocumentID(lstDocument.size() + "-- " + f.getName());
 				lstDocument.add(dc);
 				dc = new Document("");
 			}
@@ -42,6 +42,7 @@ public class Reader {
 		return lstDocument;
 	}
 	
+	@SuppressWarnings("resource")
 	public ArrayList<ArrayList<Item>> readTestTopic() throws IOException{
 		ArrayList<ArrayList<Item>> lstArrItem = new ArrayList<>();
 		FileInputStream file = new FileInputStream("textTopic.txt");
